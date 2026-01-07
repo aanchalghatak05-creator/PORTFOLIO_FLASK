@@ -492,9 +492,7 @@ def admin_delete(item_id):
     return redirect(url_for('admin_content'))
 
 
-if __name__ == '__main__':
-    if not os.path.exists(DATABASE):
-        init_db()
-    # Respect PORT env var so restarts can pick a non-conflicting port
-    port = int(os.environ.get('PORT', '5003'))
-    app.run(host='0.0.0.0', port=port)
+if __name__ == "__main__":
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
