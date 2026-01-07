@@ -1,90 +1,58 @@
-# Journalist & Multimedia Storyteller Portfolio
+# My Journalist & Multimedia Storyteller Portfolio
 
-A dynamic, professional portfolio website built with Flask and SQLite to showcase journalistic work, features, and multimedia content.
+This is my personal portfolio site, built with Flask and a small SQLite database to showcase writing, multimedia work, and short projects. I built it to be lightweight, editable from a simple admin UI, and easy to deploy.
 
-## Features
+## What this project includes
 
-- **Dynamic Content Management:** Full admin dashboard for managing articles, multimedia clips, and profile information.
-- **AJAX-Powered Archive:** Searchable and filterable writing archive with real-time updates based on Year and Category without page reloads.
-- **Multimedia Gallery:** Integrated support for YouTube and other platforms with automated regex-based thumbnail extraction.
-- **Adaptive Admin Forms:** Context-aware administrative interface that dynamically changes fields based on content type (Writing vs. Multimedia).
-- **Contact Portal:** Secure, AJAX-enabled contact system with real-time submission feedback and database persistence.
-- **Responsive Editorial Design:** Professional "Smart Pink" theme using CSS Custom Properties, optimized for high readability on mobile and desktop.
-- **Admin Security:** Session-based authentication and custom decorators to protect management routes.
+- A small admin interface to add, edit, and feature articles and multimedia items.
+- An About page with an image gallery and a lightbox viewer.
+- A contact form that stores messages in the local database.
+- Support for uploading images (stored under `static/uploads/`) and automatic thumbnailing.
 
-## Tech Stack
+## Tech stack
 
-- **Backend:** Python 3, Flask
-- **Database:** SQLite3
-- **Frontend:** HTML5, CSS3 (Custom Properties), Vanilla JavaScript (ES6+)
-- **Metadata:** Regex-based YouTube API integration for visual assets
+- Python + Flask
+- SQLite for local persistence (`content.db`)
+- Jinja2 templates, vanilla JavaScript, and plain CSS for styling
 
-## Project Structure
+## How I run it locally
 
-- `main.py`: Core application logic, database management, and routing.
-- `templates/`: Jinja2 templates for structured and reusable UI components.
-- `static/`:
-    - `css/style.css`: Modern editorial styling and responsive layouts.
-    - `js/main.js`: Client-side interactions and AJAX logic.
-- `content.db`: Local SQLite database for persistence.
+1. Create and activate a virtual environment (I use venv):
 
----
+    ```bash
+    python -m venv .venv
+    source .venv/bin/activate
+    ```
 
-## Deployment
+2. Install dependencies:
 
-Quick notes to deploy this Flask app to a PaaS or container platform.
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-### Procfile
+3. Start the dev server (the app respects the `PORT` env var):
 
-A `Procfile` is included to run the app with Gunicorn on platforms such as Heroku:
+    ```bash
+    python main.py
+    # or with PORT set, e.g. PORT=5004 python main.py
+    ```
 
-```
-web: gunicorn main:app
-```
+4. Open the site in your browser at http://127.0.0.1:5003 (or whichever PORT you chose).
 
-### Heroku / similar (quick)
+## Admin notes
 
-- Ensure `requirements.txt` includes `gunicorn` and your pinned Flask version (already present).
-- The repo includes `runtime.txt` to pin Python to `python-3.11.9`.
-- Deploy using the platform's standard flow.
+- The admin login uses a simple password stored in the `ADMIN_PASSWORD` environment variable; if not set the default is `adminpass`.
+- Visit `/admin` to log in and manage content. After logging in you can edit the profile, upload gallery images, and manage content and messages.
 
-### Docker (recommended for containerized deploy)
+## Deployment notes
 
-1. Build the image from the repository root:
+- I included a `Procfile` (for Heroku-like platforms) and a `Dockerfile` for containerized deployment.
+- The app is run in production with Gunicorn (the `Procfile` contains `web: gunicorn main:app`).
+- `runtime.txt` is present to pin Python version for some PaaS providers.
 
-```bash
-docker build -t portfolio-flask:latest .
-```
+## A few practical details I kept in mind
 
-2. Run the container (exposes port 5000 by default):
+- Uploaded images and the local SQLite DB are included in this repository for convenience during development. For production, I recommend moving the DB to a managed service and storing uploads in external storage or a mounted volume.
+- The repository contains a minimal `setup.py` for packaging if needed.
 
-```bash
-# set PORT if you want a different value
-docker run -e PORT=5000 -p 5000:5000 portfolio-flask:latest
-```
-
-The included `Dockerfile` installs dependencies and runs the app with `gunicorn` bound to `$PORT` (default 5000).
-
-### OpenShift / Other PaaS notes
-
-- The repository contains a `runtime.txt` to pin Python and `requirements.txt` for dependencies. If your platform needs a specific Python version, adjust `runtime.txt` accordingly.
-- For OpenShift, ensure the container listens on the port the platform expects (we use `$PORT` environment variable in the `Dockerfile`/Procfile).
-
-### Environment variables
-
-- `ADMIN_PASSWORD`: (optional) set a custom admin password.
-- `FLASK_SECRET`: (recommended) set a secure random secret key for session signing.
-- `PORT`: port the app listens on (defaults to 5003 in dev, but container/Procfile use `$PORT`).
-
-### Notes
-
-- In production you should not commit `content.db` or the `static/uploads/` directory. Consider using a managed database or mount a persistent volume for uploads.
-- For small deployments, `gunicorn main:app --workers 3 --bind 0.0.0.0:$PORT` is a good starting point.
-
----
-
-If you want, I can also:
-
-- Add a `.dockerignore` and improve the `Dockerfile` with a non-root user
-- Add CI or GitHub Actions to build/publish the image
-- Remove `content.db` and `static/uploads/` from the repo and add them to `.gitignore`
+If you want me to add a quick health-check endpoint, a `.dockerignore`, or CI steps to build and publish a container image, tell me which and I’ll add it next.
