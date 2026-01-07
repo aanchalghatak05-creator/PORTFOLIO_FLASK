@@ -1,58 +1,53 @@
-# My Journalist & Multimedia Storyteller Portfolio
 
-This is my personal portfolio site, built with Flask and a small SQLite database to showcase writing, multimedia work, and short projects. I built it to be lightweight, editable from a simple admin UI, and easy to deploy.
+# A Personal Portfolio Web Application for Data Journalism and Multimedia Storytelling
 
-## What this project includes
+**Student Number:** c25072445  
+**Module:** CMT120 – Fundamentals of Programming
 
-- A small admin interface to add, edit, and feature articles and multimedia items.
-- An About page with an image gallery and a lightbox viewer.
-- A contact form that stores messages in the local database.
-- Support for uploading images (stored under `static/uploads/`) and automatic thumbnailing.
+## Project Overview
+This project is a personal portfolio web application developed to showcase my work as a data journalist and multimedia storyteller. It has been created as part of the CMT120 coursework and demonstrates the practical application of web development techniques for publishing written journalism, data-driven stories, and multimedia content.
+The application is built using Flask and SQLite and focuses on dynamic content management, editorial usability, and responsive presentation, reflecting common practices in digital journalism.
 
-## Tech stack
+## Project Aims
+The main aims of this project are to:
+* Develop a professional digital portfolio suitable for journalism and multimedia work
+* Implement a database-driven approach to content management
+* Support multiple storytelling formats, including written and multimedia content
+* Apply backend and frontend programming concepts in a real-world context
 
-- Python + Flask
-- SQLite for local persistence (`content.db`)
-- Jinja2 templates, vanilla JavaScript, and plain CSS for styling
+## Functionality
+The application includes an administrative interface that allows content to be created, edited, and removed without directly modifying the source code. Written content is organised within a searchable archive that can be filtered by year and category. These filters are implemented using AJAX, allowing content to update dynamically without reloading the page.
+Multimedia entries support external platforms such as YouTube, with thumbnails automatically generated using pattern-matching logic. The administrative forms adapt based on content type, simplifying content entry and reducing user error.
+A contact form is implemented using asynchronous requests, providing real-time feedback to users and persisting submissions to the database. Access to administrative routes is protected using session-based authentication.
 
-## How I run it locally
+## Technologies Used
+* Backend: Python 3, Flask
+* Database: SQLite3
+* Frontend: HTML5, CSS3, JavaScript (ES6)
+* Deployment: Gunicorn with container support
 
-1. Create and activate a virtual environment (I use venv):
+## Project Structure
 
-    ```bash
-    python -m venv .venv
-    source .venv/bin/activate
-    ```
+```
+.
+├── main.py                # Application logic, routing, and database handling
+├── templates/             # Jinja2 templates for page rendering
+├── static/
+│   ├── css/style.css      # Editorial styling and responsive layout
+│   └── js/main.js         # Client-side logic and AJAX functionality
+├── content.db             # SQLite database (development use)
+```
 
-2. Install dependencies:
+## Deployment Notes
+The application is configured for deployment on Platform-as-a-Service and container-based environments. Dependencies are managed using requirements.txt, the Python version is pinned via runtime.txt, and the application listens on the environment-provided PORT variable to ensure compatibility with OpenShift.
+Gunicorn is used as the production WSGI server:
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+```
+gunicorn main:app
+```
 
-3. Start the dev server (the app respects the `PORT` env var):
+## Limitations
+For production use, the local SQLite database and uploaded assets should not be committed to version control. A managed database and persistent storage solution would be more appropriate for larger-scale deployment.
 
-    ```bash
-    python main.py
-    # or with PORT set, e.g. PORT=5004 python main.py
-    ```
-
-4. Open the site in your browser at http://127.0.0.1:5003 (or whichever PORT you chose).
-
-## Admin notes
-
-- The admin login uses a simple password stored in the `ADMIN_PASSWORD` environment variable; if not set the default is `adminpass`.
-- Visit `/admin` to log in and manage content. After logging in you can edit the profile, upload gallery images, and manage content and messages.
-
-## Deployment notes
-
-- I included a `Procfile` (for Heroku-like platforms) and a `Dockerfile` for containerized deployment.
-- The app is run in production with Gunicorn (the `Procfile` contains `web: gunicorn main:app`).
-- `runtime.txt` is present to pin Python version for some PaaS providers.
-
-## A few practical details I kept in mind
-
-- Uploaded images and the local SQLite DB are included in this repository for convenience during development. For production, I recommend moving the DB to a managed service and storing uploads in external storage or a mounted volume.
-- The repository contains a minimal `setup.py` for packaging if needed.
-
-If you want me to add a quick health-check endpoint, a `.dockerignore`, or CI steps to build and publish a container image, tell me which and I’ll add it next.
+## Academic Context
+This project demonstrates the use of database-driven web development, asynchronous client-server communication, authentication, and deployment configuration in support of data journalism and multimedia storytelling. It was developed to meet the requirements of the CMT120 coursework while reflecting practical workflows used in digital media production.
